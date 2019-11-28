@@ -83,12 +83,12 @@ end
 function computeF1score(prediction::Array{Int64,1}, result::Array{Int64,1})
     vp, fp, fn = 0, 0, 0
     
-    for i=1:length(Ŷ)
-        if (Ŷ[i] == 1 && test_set[i,:SURVERSE] == 1)
+    for i=1:length(prediction)
+        if (prediction[i] == 1 && result[i] == 1)
             vp += 1
-        elseif (Ŷ[i] == 1 && test_set[i,:SURVERSE] == 0)
+        elseif (prediction[i] == 1 && result[i] == 0)
             fp += 1
-        elseif (Ŷ[i] == 0 && test_set[i,:SURVERSE] == 1)
+        elseif (prediction[i] == 0 && result[i] == 1)
             fn += 1
         end
     end
