@@ -101,3 +101,39 @@ function computeF1score(prediction::Array{Int64,1}, result::Array{Int64,1})
     
     return F1
 end
+
+function CoeffRidge(data::DataFrame, y::Symbol, colonnesExplicatives::Array{Any, 1})
+    train, test = splitdataframe(data, .8)
+
+    ỹ = convert(Vector{Float64}, test[:, y])
+    X̃ = convert(Matrix{Float64}, test[:, filter(x -> (x in colonnesExplicatives), names(data))])
+
+    y = convert(Vector{Float64}, train[:, y])
+    X = convert(Matrix{Float64}, train[:, filter(x -> (x in colonnesExplicatives), names(data))])
+
+    standardize!(ỹ)
+    standardize!(X̃)
+    standardize!(y)
+    standardize!(X)
+
+    λ = 0:1:100
+
+    β_meilleurs = []
+    λ_meilleur = 0
+    RMSE_meilleur = 9999999999999
+
+    for i in 1:length(λ)
+        β_r = (X'X + λ[i] * I)\X'y
+        ŷ = X̃*β_r
+        ẽ = ỹ - ŷ
+        RMSE = sqrt(dot(ẽ,ẽ)/length(ẽ))
+        if RMSE < RMSE_meilleur
+            RMSE_meilleur = RMSE
+            β_meilleurs = β_r
+            λ_meilleur = i
+        end
+    end
+
+    return β_meilleurs
+
+end
