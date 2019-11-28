@@ -79,3 +79,25 @@ function splitdataframe(df::DataFrame, p::Real)
     return dfTrain, dfTest
     
 end
+
+function computeF1score(prediction::Array{Int64,1}, result::Array{Int64,1})
+    vp, fp, fn = 0, 0, 0
+    
+    for i=1:length(Ŷ)
+        if (Ŷ[i] == 1 && test_set[i,:SURVERSE] == 1)
+            vp += 1
+        elseif (Ŷ[i] == 1 && test_set[i,:SURVERSE] == 0)
+            fp += 1
+        elseif (Ŷ[i] == 0 && test_set[i,:SURVERSE] == 1)
+            fn += 1
+        end
+    end
+    
+    precision = vp/(vp+fp)
+    
+    recall = vp/(vp+fn)
+    
+    F1 = 2*((precision*recall)/(precision +recall))
+    
+    return F1
+end
