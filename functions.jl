@@ -73,8 +73,8 @@ function splitdataframe(df::DataFrame, p::Real)
     
     indTest = setdiff(1:n,indTrain)
     
-    dfTrain = data[indTrain,:]
-    dfTest = data[indTest,:]
+    dfTrain = df[indTrain,:]
+    dfTest = df[indTest,:]
     
     return dfTrain, dfTest
     
