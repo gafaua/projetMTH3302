@@ -111,9 +111,7 @@ function CoeffRidge(data::DataFrame, y::Symbol, colonnesExplicatives::Array{Any,
     y = convert(Vector{Float64}, train[:, y])
     X = convert(Matrix{Float64}, train[:, filter(x -> (x in colonnesExplicatives), names(data))])
 
-    #standardize!(ỹ)
     standardize!(X̃)
-    #standardize!(y)
     standardize!(X)
 
     λ = 0:1:100
