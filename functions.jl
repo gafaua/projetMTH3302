@@ -117,6 +117,8 @@ function CoeffRidge(data::DataFrame, y::Symbol, colonnesExplicatives::Array{Any,
 
     standardize!(X̃)
     standardize!(X)
+    standardize!(ỹ)
+    standardize!(y)
 
     λ = 0:1:100
 
