@@ -97,6 +97,10 @@ function computeF1score(prediction::Array{Int64,1}, result::Array{Int64,1})
     
     recall = vp/(vp+fn)
     
+    if (precision == 0 || recall == 0)
+        return 0
+    end
+    
     F1 = 2*((precision*recall)/(precision +recall))
     
     return F1

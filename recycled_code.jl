@@ -25,3 +25,21 @@ end
 plot(df_tt, x=:PLUIE, y=:SURVERSE, Geom.beeswarm)
 
 df_zero_2019 = filter(x -> year(x) == 2019, dates_with_zero_mm)
+
+####################################################################
+#utilisation du score F1 pour calculer le meilleur seuil
+seuils = LinRange(0, 1, 200)
+meilleur_seuil = 0
+meilleur_f1 = 0
+
+for i = 1:length(seuils)
+    Ŷ = zeros(Int64,length(test_set[:,1]))
+    Ŷ[θ̂.>seuils[i]] .= 1;
+    f1 = computeF1score(Ŷ, test_set[:, :SURVERSE])
+    if f1 > meilleur_f1
+        meilleur_f1 = f1
+        meilleur_seuil = seuils[i]
+    end
+end
+
+[meilleur_seuil meilleur_f1]
