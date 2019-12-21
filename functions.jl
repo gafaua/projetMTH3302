@@ -80,31 +80,19 @@ function splitdataframe(df::DataFrame, p::Real)
     
 end
 
-function computeF1score(prediction::Array{Int64,1}, result::Array{Int64,1})
-    vp, fp, fn = 0, 0, 0
-    
-    for i=1:length(prediction)
-        if (prediction[i] == 1 && result[i] == 1)
-            vp += 1
-        elseif (prediction[i] == 1 && result[i] == 0)
-            fp += 1
-        elseif (prediction[i] == 0 && result[i] == 1)
-            fn += 1
-        end
-    end
-    
-    precision = vp/(vp+fp)
-    
-    recall = vp/(vp+fn)
-    
-    if (precision == 0 || recall == 0)
-        return 0
-    end
-    
-    F1 = 2*((precision*recall)/(precision +recall))
-    
-    return F1
-end
+"""
+    CoeffRidge(data::DataFrame, y::Symbol, colonnesExplicatives:: Array{Any,1})
+
+Calcule et retourne le meilleur estimateur Beta pour un y et des variables explicatives données.
+
+@params
+data: ensemble de données
+y: variable à prédire
+colonnesExplicatives: variables explicatives
+
+B_meilleurs: estimateur Beta donnant le meilleur résultat
+
+"""
 
 function CoeffRidge(data::DataFrame, y::Symbol, colonnesExplicatives::Array{Any, 1})
     train, test = splitdataframe(data, .8)
